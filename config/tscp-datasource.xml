@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- !DOCTYPE datasource-configuration SYSTEM "resource/zdsf.dtd"> -->
+<datasource-configuration>
+
+<!-- 	<datasource name="defaultDatasource" driverClass="oracle.jdbc.OracleDriver" DSCPT = "C3P0"
+		url="jdbc:oracle:thin:@192.168.100.78:1521:ORCL" isJndi="false" userName="LXJJW"
+		passwd="LXJJW" maxActive="10" maxIdle="10" maxWait="1000" isDefaultds="true" memo="太极集成平台" />
+	
+	<datasource name="abc" driverClass="oracle.jdbc.OracleDriver" DSCPT = "C3P0"
+    	url="jdbc:oracle:thin:@127.0.0.1:1521:ORCL" isJndi="false" userName="syhg"
+    	passwd="syhg" maxActive="10" maxIdle="10" maxWait="1000" isDefaultds="true" memo="太极集成平台" />
+	 -->
+<datasource name="defaultDatasource" driverClass="com.kingbase8.Driver" DSCPT = "TSCPDBCP"
+	url="jdbc:kingbase8://192.168.137.103:54321/SSO" isJndi="false" userName="SSO"
+	passwd="sso123" maxActive="10" maxIdle="10" maxWait="1000" isDefaultds="true" memo="太极集成平台" />
+	
+ 
+<!--    <datasource name="datasourceClient" driverClass="com.kingbase.Driver" DSCPT = "TSCPDBCP"
+	url="jdbc:oracle:thin:@127.0.0.1:1521:orcl" isJndi="false" userName="tj_jcpt"
+	passwd="css" maxActive="10" maxIdle="10" maxWait="1000" isDefaultds="true" memo="太极集成平台"  -->/>
+	
+	
+<!-- 	<datasource name="datasourceClient" driverClassName="oracle.jdbc.OracleDriver"
+		isJndiDs="false" url="jdbc:oracle:thin:@127.0.0.1:1521:orcl" user="tj_jcpt"
+		password="css" /> -->
+	
+<!-- <datasource name="defaultDatasource" driverClass="oracle.jdbc.OracleDriver" DSCPT = "TSCPDBCP"
+	url="jdbc:oracle:thin:@192.168.1.152:1521:TSCP" isJndi="false" userName="esb7"
+	passwd="123456" maxActive="10" maxIdle="10" maxWait="1000" isDefaultds="true" memo="太极集成平台" />
+	 -->
+	
+ 
+<!-- <datasource name="datasourceClient" driverClass="com.mysql.jdbc.Driver" DSCPT = "C3P0"
+        url="jdbc:mysql://192.168.1.161:3306/glzx?user=root&amp;password=1234&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false" 
+        isJndi="false" userName="root" passwd="1234" maxActive="10" maxIdle="10" maxWait="1000" isDefaultds="true" memo="平台架构" />
+	 -->
+	 
+<!-- <datasource name="jdbc/ExchangeBox" driverClass="com.mysql.jdbc.Driver" DSCPT = "C3P0"
+	url="jdbc:mysql://192.168.1.161:3306/exchange?useUnicode=true&amp;characterEncoding=utf-8" isJndi="false" 
+	userName="root"	passwd="1234" maxActive="30" maxIdle="30" maxWait="1000" isDefaultds="true" memo="太极集成平台" />
+  -->
+<!-- <datasource name="datasourceClient" driverClass="com.oscar.Driver" DSCPT = "C3P0"
+        url="jdbc:oscar://localhost:2003/OSRDB" isJndi="false" userName="TSCP"
+        passwd="tscp123" maxActive="10" maxIdle="10" maxWait="1000" isDefaultds="true" memo="平台架构" />
+	 -->
+	 
+	 <!-- <datasource name="datasourceClient" driverClass="com.oscar.Driver" DSCPT = "TSCPDBCP"
+        url="jdbc:oscar://127.0.0.1:2003/OSRDB" isJndi="false" userName="tscp"
+        passwd="tscp123" maxActive="10" maxIdle="10" maxWait="1000" isDefaultds="true" memo="平台架构" /> -->
+	
+	<!-- <datasource name="datasourceClient" driverClass="com.mysql.jdbc.Driver" DSCPT = "TSCPDBCP"
+        url="jdbc:mysql://127.0.0.1:3306/sso?user=root&amp;password=admin&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false" isJndi="false" userName="root"
+        passwd="admin" maxActive="10" maxIdle="10" maxWait="1000" isDefaultds="true" memo="平台架构" /> -->
+	
+	
+	
+</datasource-configuration>

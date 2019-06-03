@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="tscp-sso-client"/>
+	<classpathentry kind="src" path="tscp-sso-common"/>
+	<classpathentry kind="src" path="tscp-sso-server"/>
+	<classpathentry kind="src" path="config"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_80"/>
+	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
+</classpath>

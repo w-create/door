@@ -1,0 +1,68 @@
+<configuration>
+	<contextName>${project.artifactId}</contextName>
+
+	<jmxConfigurator />
+
+	<!-- Spring定时器 TaskScheduler is defined -->
+	<logger name="org.springframework.scheduling">
+		<level value="info" />
+	</logger>
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date %level %logger{55} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>d:/log.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>d:/history/console.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%date %level %logger{55} - %msg%n</pattern>
+			</layout>
+		</encoder>
+	</appender>
+
+	<appender name="email" class="ch.qos.logback.classic.net.SMTPAppender">
+		<!-- 只有level为error才发送邮件 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+
+<log.mail.host>smtp.163.com</log.mail.host>
+		<log.mail.port>25</log.mail.port>
+		<log.mail.username>onlyzcl@163.com</log.mail.username>
+		<log.mail.password>gskj10086!</log.mail.password>
+		<log.mail.to>a466350665@qq.com</log.mail.to>
+
+		<smtpHost>smtp.163.com</smtpHost>
+		<smtpPort>25</smtpPort>
+		<username>onlyzcl@163.com</username>
+		<password>gskj10086!</password>
+		<subject>1.3.0</subject>
+		<from>onlyzcl@163.com</from>
+		<to>910388599@qq.com</to>
+
+		<!-- 安全通道发送,默认false -->
+		<STARTTLS>true</STARTTLS>
+		<!-- 异步发送,默认true -->
+		<asynchronousSending>true</asynchronousSending>
+		<!-- html显示 <layout class="ch.qos.logback.classic.html.HTMLLayout"/> -->
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date %-5level %logger - %message%n</pattern>
+		</layout>
+	</appender>
+
+	<root level="${log.level}">
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+		<appender-ref ref="email" />
+	</root>
+</configuration>

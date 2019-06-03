@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--DOCTYPE sql-configuration SYSTEM "resource/zsfg.dtd"--> 
+<sql-configuration>
+
+<sql name="findListByAppCode" value="SELECT DISTINCT
+     		   p.id,
+		       p.parentId,
+		       p.name,
+		       p.url,
+		       p.icon,
+		       p.isMenu,
+		       p.sort
+		FROM   SSO_SYS_PERMISSION p
+		WHERE  1 = 1
+		       AND p.isEnable = 1
+			       AND EXISTS (SELECT 1
+			                   FROM   SSO_SYS_APP a
+			                   WHERE  a.id = p.appId
+			                          AND a.isEnable = 1
+			                          AND a.code = ?) ORDER  BY p.parentId ASC, p.sort DESC" tables="user"></sql>	
+			                          
+			                                  
+<sql name="findListByAppIdAndCode" value="SELECT DISTINCT
+     		   p.id,
+		       p.parentId,
+		       p.name,
+		       p.url,
+		       p.icon,
+		       p.isMenu,
+		       p.sort
+		FROM   SSO_SYS_PERMISSION p
+			   INNER JOIN SSO_SYS_RE_ROLE_PERMISSION rp ON p.id = rp.permissionId
+			   INNER JOIN SSO_SYS_ROLE r ON r.id = rp.roleId AND r.isEnable = 1
+			   INNER JOIN SSO_SYS_RE_USER_ROLE ur ON ur.roleId = r.id
+		WHERE  p.isEnable = 1
+			       AND EXISTS (SELECT 1
+			                   FROM   SSO_SYS_APP a
+			                   WHERE  a.id = p.appId
+			                          AND a.isEnable = 1
+			                          AND a.code = ?)
+			   		AND ur.userId = ? ORDER  BY p.parentId ASC, p.sort DESC" tables="user_info"></sql>
+			   		
+			   		
+<sql name="findByAccount" value="SELECT a.* FROM SSO_SYS_USER a WHERE  a.account = ? and a.password = ?" tables="user_info"></sql>
+
+
+
+
+<sql name="updateUserStatus" value="UPDATE SSO_SYS_USER a SET
+			a.`lastLoginIp` = ?,
+			a.`lastLoginTime` = ?,
+			a.`loginCount` = ?
+		WHERE a.`account` = ?"	tables=""></sql>	
+		
+	
+<sql name="updatePassword" value="UPDATE SSO_SYS_USER a SET
+			a.`password` = ?,
+		WHERE a.`id` = ?"	tables=""></sql>	
+		
+		
+		
+<sql name="findRoleByAll" value="SELECT * 
+     	FROM SSO_SYS_ROLE a
+     	WHERE a.isEnable = ? 
+     	ORDER BY a.sort DESC" tables=""></sql>
+     	
+     	
+<sql name="getUserById" value="	SELECT * 
+     	FROM SSO_SYS_USER a
+     	WHERE id = ?"	tables="SSO_SYS_USER"></sql>
+
+<sql name="findByUserRoleId" value="SELECT * 
+     	FROM SSO_SYS_RE_USER_ROLE a
+     	WHERE a.userId = ? 
+			 AND a.roleId = ?"
+		tables=""></sql>
+
+
+
+<sql name="findUserPaginationByAccount" value="SELECT * 
+     	FROM SSO_SYS_USER a
+     	WHERE a.account like CONCAT('%',?,'%')
+     	ORDER BY a.createTime DESC limit ?,?"	tables="SSO_SYS_USER"></sql>
+     	
+<sql name="findUserPaginationByAccountAll" value="SELECT * 
+     	FROM SSO_SYS_USER a 
+     	ORDER BY a.createTime DESC  limit ?,?"	tables="SSO_SYS_USER"></sql>
+
+<sql name="findUserPaginationByAccountSize" value="SELECT count(1) as num 
+     	FROM SSO_SYS_USER a
+     	WHERE a.account like CONCAT('%',?,'%')"	tables="SSO_SYS_USER"></sql>
+     	
+<sql name="findUserPaginationByAccountAllSize" value="SELECT count(1) as num 
+        FROM SSO_SYS_USER a" tables="SSO_SYS_USER"></sql>
+
+
+
+
+<sql name="insertUser" value="INSERT INTO SSO_SYS_USER(
+			account,
+			password,
+			lastLoginIp,
+			lastLoginTime,
+			loginCount,
+			createTime,
+			isEnable
+		) 
+		VALUES (?,?,?,?,?,?,?)"	tables="SSO_SYS_USER"></sql>
+		
+		
+<sql name="insertSysLog" value="INSERT INTO SSO_SYS_LOG(
+           user_name,
+           action,
+           create_time,
+           update_time)
+           VALUES(?,?,?,?,?)" tables ="SSO_SYS_LOG"></sql>		
+		
+
+<sql name="updateUser" value="UPDATE SSO_SYS_USER a SET
+			a.`account` = ?,
+			a.`password` = ?,
+			a.`lastLoginIp` = ?,
+			a.`lastLoginTime` = ?,
+			a.`loginCount` = ?,
+			a.isEnable = ?
+		WHERE a.`id` = ?"	tables=""></sql>
+
+<sql name="deleteUserRole" value="DELETE FROM SSO_SYS_RE_USER_ROLE
+		WHERE  userId in (#dynamicParam#)"	tables="SSO_SYS_RE_USER_ROLE"></sql>
+
+<sql name="insertUserRole" value="INSERT INTO SSO_SYS_RE_USER_ROLE(userId,roleId) VALUES (?,?)"	tables="SSO_SYS_RE_USER_ROLE"></sql>
+
+<sql name="enableUser" value="UPDATE SSO_SYS_USER a SET
+			a.isEnable = ? WHERE a.`id` in (#dynamicParam#)"	tables="SSO_SYS_USER"></sql>
+			
+			
+<sql name="deleteUserByIds" value="DELETE FROM SSO_SYS_USER WHERE id in (#dynamicParam#) " tables="SSO_SYS_USER"></sql>
+<sql name="deleteUserRoleByUserId" value="DELETE FROM SSO_SYS_RE_USER_ROLE WHERE userId in (#dynamicParam#)" tables="SSO_SYS_RE_USER_ROLE"></sql>
+
+<sql name="resetPassword" value="UPDATE SSO_SYS_USER a SET
+			a.password = ? WHERE  a.`id` in (#dynamicParam#)"	tables="SSO_SYS_USER"></sql>
+		
+		
+<sql name="getRoleById" value="	SELECT * 
+     	FROM SSO_SYS_ROLE a
+     	WHERE id = ?"	tables="SSO_SYS_ROLE"></sql>
+
+
+<sql name="findRolePaginationByName" value="SELECT * 
+     	FROM SSO_SYS_ROLE a
+     	WHERE a.name like CONCAT('%',?,'%')
+     	ORDER BY a.sort DESC limit ?,?"	tables="SSO_SYS_ROLE"></sql>
+     	
+<sql name="findRolePaginationByNameSize" value="SELECT count(1) as num
+     	FROM SSO_SYS_ROLE a
+     	WHERE a.name like CONCAT('%',?,'%')"	tables="SSO_SYS_ROLE"></sql>
+     	
+     	
+<sql name="findRolePaginationByNameAll" value="SELECT * 
+     	FROM SSO_SYS_ROLE a 
+     	ORDER BY a.sort DESC limit ?,?"	tables="SSO_SYS_ROLE"></sql>
+     	
+<sql name="findRolePaginationByNameAllSize" value="SELECT count(1) as num
+     	FROM SSO_SYS_ROLE a"	tables="SSO_SYS_ROLE"></sql>
+     	
+     	
+<sql name="saveRole" value="INSERT INTO SSO_SYS_ROLE(name,sort,description,isEnable) 
+                              VALUES (?,?,?,?)"	tables="SSO_SYS_ROLE"></sql>
+                              
+                              
+<sql name="updateRole" value="UPDATE SSO_SYS_ROLE a SET
+			a.`name` = ?,
+			a.`sort` = ?,
+			a.`description` = ?,
+			a.isEnable = ?
+		WHERE a.`id` = ?"	tables="SSO_SYS_ROLE"></sql>
+		
+		
+<sql name="enableRole" value="UPDATE SSO_SYS_ROLE a SET
+			a.isEnable = ?
+		WHERE a.`id` in (#dynamicParam#)"	tables="SSO_SYS_ROLE"></sql>
+		
+		
+<sql name="deleteRoleByIds" value="DELETE FROM SSO_SYS_ROLE where id in  (#dynamicParam#)"	tables="SSO_SYS_ROLE"></sql>
+
+<sql name="deleteUserRoleByRoleIds" value="DELETE FROM SSO_SYS_RE_USER_ROLE
+		WHERE roleId in  (#dynamicParam#)"	tables="SSO_SYS_RE_USER_ROLE"></sql>
+
+<sql name="deleteRolePermByRoleIds" value="DELETE FROM SSO_SYS_RE_ROLE_PERMISSION
+		WHERE roleId in (#dynamicParam#)"	tables="SSO_SYS_RE_ROLE_PERMISSION"></sql>
+
+
+
+<sql name="findAppByAll" value="SELECT * 
+     	FROM SSO_SYS_APP a
+     	WHERE a.isEnable = ?
+     	ORDER BY a.sort DESC, a.createTime DESC" tables="SSO_SYS_APP"></sql>
+     	
+     	
+<sql name="findAppByAllSize" value="SELECT count(1) as num
+     	FROM SSO_SYS_APP a
+     	WHERE a.isEnable = ?" tables="SSO_SYS_APP"></sql>
+     	
+
+<sql name="findAppByAppIds" value="SELECT * 
+     	FROM SSO_SYS_APP a
+     	WHERE id in (#dynamicParam#)
+     	ORDER BY a.sort DESC, a.createTime DESC" tables="SSO_SYS_APP"></sql>
+     	
+     	
+<sql name="deleteByAppAndRoleId" value="DELETE FROM SSO_SYS_RE_ROLE_PERMISSION
+		WHERE appId = ?
+		AND roleId = ?"	tables="SSO_SYS_RE_ROLE_PERMISSION"></sql>
+		
+<sql name="saveRoleApp" value="INSERT INTO SSO_SYS_RE_ROLE_PERMISSION(
+			appId,
+			roleId,
+			permissionId) 
+		VALUES (?,?,?)"	tables="SSO_SYS_RE_ROLE_PERMISSION"></sql>
+		
+		
+<sql name="findAppByAppId" value="SELECT * 
+     	FROM SSO_SYS_PERMISSION a
+     	WHERE 1 = 1
+			AND a.appId = ?
+			AND a.isEnable = ? 
+     	ORDER BY a.sort DESC "	tables="SSO_SYS_PERMISSION"></sql>
+     	
+     	
+<sql name="findRolePermissionByRoleId" value="SELECT a.* 
+     	FROM SSO_SYS_RE_ROLE_PERMISSION a
+     	INNER JOIN SSO_SYS_PERMISSION p ON p.id = a.permissionId AND p.isEnable = 1
+     	WHERE a.roleId = ?"	tables="SSO_SYS_RE_ROLE_PERMISSION,SSO_SYS_PERMISSION"></sql>
+		
+		
+<sql name="findAppPaginationByNameAll" value="SELECT * 
+     	FROM SSO_SYS_APP a
+     	ORDER BY a.sort DESC, a.createTime DESC limit ?,?"	tables=""></sql>
+		
+<sql name="findAppPaginationByNameAllSize" value="SELECT count(1) as num 
+     	FROM SSO_SYS_APP a"	tables="SSO_SYS_APP"></sql>
+		
+<sql name="findAppPaginationByName" value="SELECT * 
+     	FROM SSO_SYS_APP a
+     	WHERE a.name like CONCAT('%',?,'%')
+     	ORDER BY a.sort DESC, a.createTime DESC limit ?,?"	tables=""></sql>
+		
+<sql name="findAppPaginationByNameSize" value="SELECT count(1) as num
+     	FROM SSO_SYS_APP a 
+     	WHERE a.name like CONCAT('%',?,'%')"	tables=""></sql>
+     	
+     	
+<sql name="findAppByCode" value="SELECT * 
+     	FROM SSO_SYS_APP a 
+     	WHERE a.code = ?"	tables="SSO_SYS_APP"></sql>
+     	
+     	
+<sql name="enableApp" value="UPDATE SSO_SYS_APP a SET
+			a.isEnable = ?
+		WHERE a.`id` in (#dynamicParam#)"	tables="SSO_SYS_APP"></sql>
+		
+		
+<sql name="saveApp" value="INSERT INTO SSO_SYS_APP(name,code,sort,createTime,isEnable) VALUES (?,?,?,?,?)"	tables="SSO_SYS_APP"></sql>
+
+<sql name="deleteRolePermissionByAppIds" value="DELETE FROM SSO_SYS_RE_ROLE_PERMISSION
+		WHERE  appId in (#dynamicParam#)" tables="SSO_SYS_RE_ROLE_PERMISSION"></sql>
+		
+<sql name="deletepermissionByAppIds" value="DELETE FROM SSO_SYS_PERMISSION
+		WHERE appId in (#dynamicParam#)"	tables="SSO_SYS_PERMISSION"></sql>
+		
+
+<sql name="deleteAppByAppIds" value="DELETE FROM SSO_SYS_APP WHERE ID in (#dynamicParam#)"	tables=""></sql>
+
+<sql name="updateApp" value="UPDATE SSO_SYS_APP a SET
+			a.`name` = ?,
+			a.`code` = ?,
+			a.sort = ?,
+			a.isEnable = ?
+		WHERE a.`id` = ?"	tables="SSO_SYS_APP"></sql>
+		
+		
+		
+<sql name="findPermissionById" value="SELECT * 
+     	FROM SSO_SYS_PERMISSION a
+     	WHERE id = ?"	tables=""></sql>
+     	
+<sql name="savePermission" value="INSERT INTO SSO_SYS_PERMISSION(
+			appId,
+			parentId,
+			icon,
+			name,
+			url,
+			sort,
+			isMenu,
+			isEnable) 
+		   VALUES (?,?,?,?,?,?,?,?)" tables="SSO_SYS_PERMISSION"></sql>
+     	
+<sql name="updatePermission" value="UPDATE SSO_SYS_PERMISSION SET
+			appId =?,
+			parentId =?,
+			icon = ?,
+			name = ?,
+			url = ?,
+			sort = ?,
+			isMenu = ?,
+			isEnable = ? 
+		    WHERE id = ?" tables="SSO_SYS_PERMISSION"></sql>
+		   
+		   
+<sql name="findPermissionByAppId" value="SELECT * 
+     	FROM SSO_SYS_PERMISSION a
+     	WHERE a.appId = ? 
+     	ORDER BY a.sort DESC " tables="SSO_SYS_PERMISSION"></sql>
+     	
+<sql name="deleteRPByPermissionIds" value="DELETE FROM SSO_SYS_RE_ROLE_PERMISSION 
+		WHERE permissionId in (#dynamicParam#)"	tables=""></sql>
+		
+		
+<sql name="deletePermissionById" value="DELETE FROM SSO_SYS_PERMISSION 
+				WHERE `id` in (#dynamicParam#)"	tables="SSO_SYS_PERMISSION"></sql>
+				
+				
+<sql name="queryCount" value="SELECT count(*) total FROM USER "	tables=""></sql>
+<sql name="queryCount" value="SELECT count(*) total FROM USER "	tables=""></sql>
+
+
+</sql-configuration>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--DOCTYPE tscp-configuration SYSTEM "resource/ztcf.dtd"--> 
+<tscp-configuration>
+
+	<!-- configure server information include machine name and node name -->
+	<server-conf>
+	    <!-- WARNING .... The ip address don't use 127.0.0.1 . must use the Ip you configure !  -->
+		<machine-name name="machine-01" iscluster="false" ip="127.0.0.1" />
+		<node-name name="TSCP" memo="系统节点名称，在分布式系统用于节点区分" />
+		<version>1.0</version>
+	</server-conf>
+	
+	<!-- the global argument of system configuration -->
+	<global-conf>
+		<systemcharset defaultcharset="UTF-8" />
+		<system-thread-monitor value="true"></system-thread-monitor>
+		<jmxserver port="9001" />
+		<loglevel value="DEBUG" />
+		<runningmodel value="DEVELOP" memo="configure system running model" />
+		<service expose="true" protocol="default" port="9808" connTimeout="30000" respTimeout="10000" callTimeout="60000" proxyConnTimeout="10000"
+			handshakeTimeout="10000" memo="current configuration is used to set whether allow to visit remote system service">
+		</service>
+	</global-conf>
+	
+	
+	<!-- configure the information which the system require when system start up  -->
+	<platform-conf>
+	    <!-- platform provided three kinds of ioc achieve. the first one is guice
+	        the other one is spring and the another one is the tscp platform achieve -->
+	    <container-engine value="guice" memo="service manager"/>
+		<scanners userDefineLibPath="" classexpression="(\b((?!\$).)+\b\.class)"  jarexpression="(tscp.+\.jar)|(gm.+\.jar)" >
+			<scanner name="systemDefaultClassScanner" class="com.taiji.tscp.kernel.servicemanager.TscpSystemClassScanner" memo="system default class scanner">
+				<analyzer name="coreAnalyzer" class="com.taiji.tscp.kernel.classanalyzer.AnalyzerResourceRegister" memo=""></analyzer>
+			    <analyzer name="extensionAnalyzer" class="com.taiji.tscp.kernel.classanalyzer.ExtensionAnalyzer" memo=""></analyzer>
+			</scanner>
+		</scanners>
+	</platform-conf>
+	
+	<!-- @description configure system log framework, user can custom log framework by configuration
+	     @attribute setting the log framework enable or disable
+	     @attribute configure the name of log framework use the broker -->
+	<logframework-conf enable="false" islocalQueue="false" brokerName="SYSTEM_LOG_BROKER">
+	<!-- @description setting the log framework handler class. the handle class must be binded a theme
+	     of course allow multi-theme or multi-class here -->
+	  <log theme="SYSTEM_LOG_QUEUE" port="1903" timeout="30" class="technology.CustomLogHandler" ></log>
+	</logframework-conf>
+	
+	
+	<!-- setting the system components information  when the system start up this components will be check and load into the system -->
+	<!-- otherwise the developer can also use the annotation to mark the component that developer default by themselves -->
+	<!-- parameter defined by the attribute 'parameter'. if have many parameter need to define you can use symbol ',' to break up -->
+	<component-conf>
+	
+	   <!-- configure system cache middleware . support local cache and distribute system cache -->
+<!-- 	   <component name="systemKVCache" bootsequence="4" class="com.taiji.tscp.kernel.component.TscpMemoryCacheComponent" parameters="ip=192.168.30.185,port=6379" memo="configure redis cache middleware" ></component>
+	   <component name="dbCache" bootsequence="9" dependency="systemKVCache" class="com.taiji.tscp.persistence.cache.TscpDBCacheComponent" parameters="cacheFile=tscp-db-cache.xml" memo="configure the data that need cache"></component>
+ -->       <!-- <component name="tmail" bootsequence="10" class="com.taiji.tscp.external.tmail.TmailComponent" parameters="theme=tmail"  memo="configure the data that need cache"> </component>    -->
+         
+<!--        <component name="TscpSchedulerComponent" bootsequence="45" class="com.taiji.tscp.scheduler.server.TscpSchedulerComponent" parameters="iscorecomponent = false"  memo=""></component>    
+ -->	</component-conf>
+
+</tscp-configuration>
